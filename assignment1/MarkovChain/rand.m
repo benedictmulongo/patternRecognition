@@ -28,7 +28,7 @@ init_prob = mc.InitialProb';
 A = mc.TransitionProb;
 [~,state0] = max(init_prob);
 
-% X{1} = state0;
+terminate = finiteDuration(mc);
 S(1) = state0;
 
 % Allocate and initiales Discrete random states 
@@ -42,6 +42,11 @@ end
 for i=2:T
     temp =  discrete_state{S(i-1)};
     S(i) = temp.rand(1);
+    
+    if terminate && (S(i) == nS + 1)
+       S = S(1:end_state - 1);
+       break 
+    end
 end 
 
 % error('Method not yet implemented');
